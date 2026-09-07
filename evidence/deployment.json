@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "source_revision": "8badecc0fb7d3f8c3411dbc8621b14d2c26ebbe1",
+  "timestamp_utc": "2026-09-07T04:38:35.200201+00:00",
+  "repository_url": "https://github.com/RoshanDewmina/durable-workflows",
+  "demo_url": "https://roshandewmina.github.io/durable-workflows/",
+  "deployment_type": "static_evidence_only",
+  "public_backend_deployed": false,
+  "provider": "GitHub Pages",
+  "build_status": "built",
+  "verified": [
+    "Public page loaded in fresh Chromium session",
+    "Static-only label, real results and source link visible",
+    "Receipt navigation returns original JSON evidence"
+  ],
+  "external_cost_usd": 0,
+  "live_backend_blocker": "No authenticated compatible owned persistent process host with resettable storage provisioned. Serverless files/processes cannot prove worker persistence."
+}
