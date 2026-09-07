@@ -14,8 +14,8 @@ serve:
 	uv run durable-workflows
 
 demo:
-	uv run python scripts/demo_http.py
+	uv run python3 scripts/demo_http.py
 
 benchmark:
-	uv run python scripts/benchmark.py --jobs 300 --workers 4 --records-per-job 12 --output evidence/benchmark.json
+	uv run python3 scripts/benchmark.py --jobs 300 --workers 4 --records-per-job 12 --output evidence/benchmark.json
 

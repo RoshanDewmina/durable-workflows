@@ -84,3 +84,5 @@ footer { border-top: 1px solid rgba(22,33,28,.16); color: var(--muted); font-siz
   .guarantees { grid-template-columns: 1fr; }
 }
 
+
+.empty-state[hidden] { display: none; }

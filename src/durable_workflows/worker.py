@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import sqlite3
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -88,6 +89,9 @@ class Worker:
                 "job dependency timed out",
                 extra={**context, "state": state, "error_code": "dependency_timeout"},
             )
+        except sqlite3.OperationalError:
+            # Keep the fenced lease recoverable after a storage failure.
+            raise
         except Exception as exc:
             state = self.database.fail_attempt(
                 job["id"],
@@ -107,15 +111,22 @@ class Worker:
         return True
 
     def run_forever(self, stop: threading.Event) -> None:
-        recovered = self.database.recover_expired()
-        if recovered:
-            logger.warning(
-                "expired leases recovered",
-                extra={"worker_id": self.worker_id, "attempt": recovered},
-            )
+        backoff = 0.05
         while not stop.is_set():
-            if not self.run_once():
-                stop.wait(self.settings.poll_interval_seconds)
+            try:
+                # claim_next also recovers expired leases in its claim transaction.
+                worked = self.run_once()
+                backoff = 0.05
+                if not worked:
+                    stop.wait(self.settings.poll_interval_seconds)
+            except sqlite3.OperationalError as exc:
+                code = getattr(exc, "sqlite_errorcode", 0) & 0xFF
+                if code not in (sqlite3.SQLITE_BUSY, sqlite3.SQLITE_LOCKED):
+                    logger.exception("worker storage failure", extra={"worker_id": self.worker_id})
+                    raise
+                logger.warning("storage busy; retrying", extra={"worker_id": self.worker_id})
+                stop.wait(backoff)
+                backoff = min(backoff * 2, 1.0)
 
 
 def run_worker_threads(

@@ -39,6 +39,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         threads = []
         if settings.start_workers and settings.worker_count:
             stop, threads = run_worker_threads(database, settings)
+        application.state.worker_threads = threads
         yield
         if stop:
             stop.set()
@@ -76,8 +77,20 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @application.get("/health")
     def health() -> dict[str, str]:
         try:
+            if not database.path.is_file():
+                raise RuntimeError("database file missing")
             with database.session() as connection:
-                connection.execute("SELECT 1").fetchone()
+                connection.execute("PRAGMA busy_timeout = 100")
+                connection.execute("BEGIN IMMEDIATE")
+                try:
+                    for table in ("jobs", "idempotency_keys", "events", "side_effects"):
+                        connection.execute(f"SELECT * FROM {table} LIMIT 0")
+                finally:
+                    connection.rollback()
+            if settings.start_workers and settings.worker_count:
+                threads = getattr(application.state, "worker_threads", [])
+                if len(threads) != settings.worker_count or not all(t.is_alive() for t in threads):
+                    raise RuntimeError("embedded worker unavailable")
         except Exception as exc:
             raise HTTPException(status_code=503, detail="database unavailable") from exc
         return {"status": "ok", "service": "durable-workflows", "version": __version__}

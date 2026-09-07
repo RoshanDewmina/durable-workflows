@@ -144,3 +144,30 @@ def test_process_kill_then_restart_recovers_expired_lease(tmp_path: Path) -> Non
     assert final["state"] == "succeeded"
     assert final["attempt"] == 2
     assert database.side_effect_count(job["id"]) == 1
+
+
+def test_worker_survives_database_lock_beyond_busy_timeout(settings: Settings) -> None:
+    database = initialized(settings)
+    job, _ = database.create_job("synthetic-alpha", PAYLOAD, "locked-test-0001", 3)
+    lock = database.connect()
+    lock.execute("BEGIN IMMEDIATE")
+    stop = threading.Event()
+    thread = threading.Thread(
+        target=Worker(database, settings, "lock-worker").run_forever, args=(stop,)
+    )
+    thread.start()
+    try:
+        time.sleep(5.3)  # Exceeds the actual configured SQLite five-second busy timeout.
+        assert thread.is_alive()
+        lock.rollback()
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline:
+            if database.get_job("synthetic-alpha", job["id"])["state"] == "succeeded":
+                break
+            time.sleep(.02)
+        assert database.get_job("synthetic-alpha", job["id"])["state"] == "succeeded"
+        assert database.side_effect_count(job["id"]) == 1
+    finally:
+        lock.close()
+        stop.set()
+        thread.join(timeout=6)

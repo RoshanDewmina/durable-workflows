@@ -124,3 +124,9 @@ docker run --rm -p 127.0.0.1:8111:8111 \
 
 The source and original synthetic fixtures are MIT licensed; see [LICENSE](LICENSE). The project downloads no dataset and imports no private data. Values created through the UI and test suite are synthetic integers stored only in the configured local SQLite file.
 
+
+Readiness checks validate the expected schema, acquire and roll back a short write
+transaction, and check embedded worker threads. A missing database, blocked writer,
+or missing worker returns HTTP 503. External worker mode cannot establish remote
+worker liveness. Workers back off on SQLite BUSY/LOCKED and retry; storage failures
+leave fenced leases recoverable instead of mislabeling them as dependency failures.
