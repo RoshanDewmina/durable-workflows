@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Submit and inspect durable synthetic data imports.">
+  <title>Relay · Durable imports</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Relay home">
+      <span class="brand-mark" aria-hidden="true">R</span>
+      <span>Relay</span>
+    </a>
+    <div class="service-status"><span class="pulse" aria-hidden="true"></span> Local service</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">DURABLE DATA IMPORTS</p>
+      <h1>Submit it once.<br><em>Know where it stands.</em></h1>
+      <p class="lede">Every request is persisted before work begins, safely retried after failures, and kept visible from queue to result.</p>
+    </section>
+
+    <section class="workspace" aria-label="Import workspace">
+      <aside class="composer">
+        <div class="section-heading">
+          <span class="step">01</span>
+          <div><h2>New import</h2><p>Use synthetic integer records.</p></div>
+        </div>
+
+        <form id="import-form">
+          <label for="identity">Demo identity</label>
+          <select id="identity">
+            <option value="demo-alpha-token">Synthetic Alpha</option>
+            <option value="demo-beta-token">Synthetic Beta</option>
+          </select>
+
+          <label for="records">Record values</label>
+          <textarea id="records" rows="5" spellcheck="false" placeholder="12, 24, 36">12, 24, 36</textarea>
+          <p class="hint">Comma-separated whole numbers, up to 1,000 records.</p>
+
+          <button id="submit-button" type="submit">
+            <span>Start import</span><span aria-hidden="true">→</span>
+          </button>
+          <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </aside>
+
+      <section class="jobs-panel">
+        <div class="section-heading jobs-title">
+          <span class="step">02</span>
+          <div><h2>Request timeline</h2><p>Live state from the durable event log.</p></div>
+          <button id="refresh" class="quiet-button" type="button">Refresh</button>
+        </div>
+        <div id="empty-state" class="empty-state">
+          <div class="empty-icon" aria-hidden="true">↗</div>
+          <h3>No imports yet</h3>
+          <p>Your submitted requests will appear here with their attempts and results.</p>
+        </div>
+        <div id="jobs" class="jobs" aria-live="polite"></div>
+      </section>
+    </section>
+
+    <section class="guarantees" aria-label="System guarantees">
+      <article><span>Persisted first</span><p>The request and its first event commit together before a worker can claim it.</p></article>
+      <article><span>Fenced workers</span><p>An expired worker cannot overwrite a newer worker's completed result.</p></article>
+      <article><span>Honest delivery</span><p>Processing is at least once; the local import summary is transactionally deduplicated.</p></article>
+    </section>
+  </main>
+
+  <footer><span>Relay / durable-workflows</span><a href="/docs">API documentation</a></footer>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
+

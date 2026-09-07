@@ -1,0 +1,86 @@
+:root {
+  --ink: #16211c;
+  --muted: #69726d;
+  --paper: #f4f1e9;
+  --panel: #fffdf7;
+  --line: #d8d5cc;
+  --green: #174f3a;
+  --lime: #caea87;
+  --orange: #d56d3a;
+  color-scheme: light;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 92% 5%, #e4edcf 0, transparent 27rem), var(--paper); }
+button, textarea, select { font: inherit; }
+a { color: inherit; }
+
+.topbar, footer { max-width: 1180px; margin: auto; padding: 26px 28px; display: flex; justify-content: space-between; align-items: center; }
+.topbar { border-bottom: 1px solid rgba(22,33,28,.16); }
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 750; letter-spacing: -.02em; }
+.brand-mark { display: grid; place-items: center; width: 31px; height: 31px; color: white; background: var(--green); border-radius: 50%; font-family: Georgia, serif; font-style: italic; }
+.service-status { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: .85rem; }
+.pulse { width: 8px; height: 8px; border-radius: 50%; background: #5a9d69; box-shadow: 0 0 0 5px rgba(90,157,105,.13); }
+
+main { max-width: 1180px; margin: auto; padding: 0 28px 48px; }
+.hero { padding: 72px 0 56px; max-width: 850px; }
+.eyebrow { margin: 0 0 18px; color: var(--orange); font-size: .72rem; font-weight: 800; letter-spacing: .17em; }
+h1 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(3.3rem, 8vw, 6.8rem); line-height: .88; letter-spacing: -.055em; font-weight: 500; }
+h1 em { color: var(--green); font-weight: 400; }
+.lede { max-width: 620px; margin: 28px 0 0; color: var(--muted); font-size: 1.08rem; line-height: 1.65; }
+
+.workspace { display: grid; grid-template-columns: minmax(280px, .8fr) minmax(440px, 1.35fr); border: 1px solid var(--line); background: var(--panel); box-shadow: 0 18px 55px rgba(22,33,28,.07); }
+.composer, .jobs-panel { padding: 32px; }
+.composer { border-right: 1px solid var(--line); background: rgba(255,255,255,.3); }
+.section-heading { display: flex; gap: 15px; align-items: flex-start; margin-bottom: 30px; }
+.section-heading h2 { margin: -3px 0 4px; font-size: 1.2rem; }
+.section-heading p { margin: 0; color: var(--muted); font-size: .84rem; }
+.step { display: grid; place-items: center; width: 29px; height: 29px; flex: 0 0 auto; border: 1px solid var(--ink); border-radius: 50%; font-family: ui-monospace, monospace; font-size: .67rem; }
+label { display: block; margin: 22px 0 8px; font-size: .75rem; font-weight: 750; text-transform: uppercase; letter-spacing: .08em; }
+select, textarea { width: 100%; border: 1px solid var(--line); border-radius: 0; background: #fff; padding: 13px 14px; color: var(--ink); transition: border .2s, box-shadow .2s; }
+select:focus, textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(23,79,58,.1); }
+textarea { resize: vertical; line-height: 1.55; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9rem; }
+.hint { margin: 7px 0 0; color: var(--muted); font-size: .75rem; }
+#submit-button { width: 100%; margin-top: 26px; border: 0; padding: 15px 17px; background: var(--green); color: #fff; display: flex; justify-content: space-between; cursor: pointer; font-weight: 700; }
+#submit-button:hover { background: #0e3c2a; }
+#submit-button:disabled { opacity: .5; cursor: wait; }
+.form-status { min-height: 1.2em; margin: 11px 0 0; color: var(--orange); font-size: .8rem; }
+
+.jobs-title { align-items: center; }
+.jobs-title .quiet-button { margin-left: auto; }
+.quiet-button { border: 0; border-bottom: 1px solid var(--ink); background: transparent; padding: 5px 0; cursor: pointer; color: var(--ink); font-size: .77rem; }
+.empty-state { min-height: 255px; display: grid; place-items: center; align-content: center; text-align: center; color: var(--muted); }
+.empty-icon { width: 55px; height: 55px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; font-size: 1.35rem; }
+.empty-state h3 { margin: 17px 0 5px; color: var(--ink); font-size: 1rem; }
+.empty-state p { max-width: 320px; margin: 0; font-size: .82rem; line-height: 1.5; }
+.jobs { display: grid; gap: 10px; }
+.job { border: 1px solid var(--line); padding: 18px; display: grid; grid-template-columns: 1fr auto; gap: 12px; background: #fff; animation: enter .22s ease-out; }
+@keyframes enter { from { opacity: 0; transform: translateY(4px); } }
+.job h3 { margin: 0 0 7px; font-family: ui-monospace, monospace; font-size: .77rem; }
+.job-meta, .job-result { color: var(--muted); font-size: .77rem; }
+.job-result { margin-top: 8px; color: var(--green); font-weight: 700; }
+.badge { align-self: start; padding: 5px 9px; border-radius: 999px; background: #edf0eb; font-size: .67rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; }
+.badge.succeeded { background: var(--lime); }
+.badge.failed, .badge.cancelled { background: #f3d1bf; }
+.badge.running { background: #cdddec; }
+.badge.retry_wait { background: #f3e2ae; }
+
+.guarantees { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 28px; background: var(--line); border: 1px solid var(--line); }
+.guarantees article { padding: 24px; background: var(--paper); }
+.guarantees span { font-family: Georgia, serif; font-size: 1.12rem; }
+.guarantees p { margin: 9px 0 0; color: var(--muted); font-size: .78rem; line-height: 1.55; }
+footer { border-top: 1px solid rgba(22,33,28,.16); color: var(--muted); font-size: .75rem; }
+
+@media (max-width: 760px) {
+  .topbar, footer, main { padding-left: 18px; padding-right: 18px; }
+  .hero { padding: 50px 0 40px; }
+  h1 { font-size: clamp(3rem, 16vw, 5rem); }
+  .workspace { grid-template-columns: 1fr; }
+  .composer { border-right: 0; border-bottom: 1px solid var(--line); }
+  .composer, .jobs-panel { padding: 24px; }
+  .guarantees { grid-template-columns: 1fr; }
+}
+
