@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "source_revision": "1ec1714d7f5bf6a1227c9092cc5116a26cfe23c8",
+  "dirty_tree": false,
+  "command": "uv run python scripts/benchmark.py --jobs 300 --workers 4 --records-per-job 12 --output evidence/benchmark.json",
+  "timestamp": "2026-09-07T03:48:45.595751Z",
+  "exit_status": 0,
+  "environment": {
+    "os": "macOS-27.0-arm64-arm-64bit",
+    "architecture": "arm64",
+    "python": "3.12.10",
+    "hardware": "Apple M4",
+    "logical_cpu_count": 10,
+    "sqlite": "3.49.1"
+  },
+  "inputs": {
+    "jobs": 300,
+    "workers": 4,
+    "records_per_job": 12,
+    "synthetic": true,
+    "seed": null
+  },
+  "measured_results": {
+    "submission_seconds": 0.407495,
+    "processing_seconds": 0.370245,
+    "wall_seconds": 0.77774,
+    "processing_jobs_per_second": 810.275,
+    "succeeded_jobs": 300,
+    "deduplicated_side_effects": 300
+  },
+  "limitations": [
+    "Synthetic local workload; it is not evidence of production or multi-host capacity.",
+    "SQLite WAL serializes writers; results depend on host and background load.",
+    "The dependency is an in-process deterministic transform with no network latency."
+  ]
+}

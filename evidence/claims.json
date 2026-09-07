@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "project": "durable-workflows",
+  "source_revision": "1ec1714d7f5bf6a1227c9092cc5116a26cfe23c8",
+  "claims": [
+    {
+      "id": "durable-owner-idempotency-v1",
+      "capability_tags": [
+        "backend-api",
+        "authorization",
+        "idempotency",
+        "input-validation"
+      ],
+      "implementation_refs": [
+        "src/durable_workflows/app.py:create_job",
+        "src/durable_workflows/db.py:Database.create_job",
+        "src/durable_workflows/models.py:JobCreate",
+        "tests/test_api.py"
+      ],
+      "source_revision": "1ec1714d7f5bf6a1227c9092cc5116a26cfe23c8",
+      "receipt_refs": [
+        "evidence/verification.json"
+      ],
+      "conditions": "Synthetic local identities and Python 3.12 on one macOS host.",
+      "limitations": "Bearer tokens use a configured in-memory map; public identity-provider integration is not implemented.",
+      "draft_resume_wording": "Built an owner-scoped FastAPI import API with strict payload validation and transactional idempotency collision detection.",
+      "wording_status": "user_review_pending",
+      "mastery_status": "pending"
+    },
+    {
+      "id": "durable-recovery-fencing-v1",
+      "capability_tags": [
+        "concurrency",
+        "durable-jobs",
+        "failure-recovery",
+        "test-engineering"
+      ],
+      "implementation_refs": [
+        "src/durable_workflows/db.py:Database.claim_next",
+        "src/durable_workflows/db.py:Database.complete_job",
+        "src/durable_workflows/worker.py:Worker",
+        "tests/test_worker.py"
+      ],
+      "source_revision": "1ec1714d7f5bf6a1227c9092cc5116a26cfe23c8",
+      "receipt_refs": [
+        "evidence/verification.json"
+      ],
+      "conditions": "SQLite WAL, four local worker threads, controlled dependency, and a real local subprocess termination test.",
+      "limitations": "The tested guarantee is single-host; worker execution remains at least once and remote side effects require their own idempotency contract.",
+      "draft_resume_wording": "Implemented persistent workers with atomic leases, fencing tokens, bounded retries, and tested process-stop recovery with deduplicated local results.",
+      "wording_status": "user_review_pending",
+      "mastery_status": "pending"
+    },
+    {
+      "id": "durable-local-benchmark-v1",
+      "capability_tags": [
+        "performance-measurement",
+        "sqlite",
+        "concurrency"
+      ],
+      "implementation_refs": [
+        "scripts/benchmark.py",
+        "src/durable_workflows/db.py",
+        "src/durable_workflows/worker.py"
+      ],
+      "source_revision": "1ec1714d7f5bf6a1227c9092cc5116a26cfe23c8",
+      "receipt_refs": [
+        "evidence/benchmark.json"
+      ],
+      "conditions": "300 synthetic jobs, 12 integer records per job, four worker threads, Apple M4, Python 3.12.10, SQLite 3.49.1.",
+      "limitations": "Observed local synthetic throughput is host- and load-dependent and does not establish production or multi-host capacity.",
+      "draft_resume_wording": "Measured 810 local synthetic jobs/second across four workers while committing 300 unique import summaries on an Apple M4 under the recorded benchmark conditions.",
+      "wording_status": "user_review_pending",
+      "mastery_status": "pending"
+    }
+  ]
+}
