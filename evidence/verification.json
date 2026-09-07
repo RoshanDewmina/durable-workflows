@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "source_revision": "460d5d6e208ed719ec7ecc8e964c3af3fd9132e0",
+  "dirty_tree": false,
+  "timestamp": "2026-09-07T03:51:18Z",
+  "environment": {
+    "os": "macOS 27.0 (26A5425a)",
+    "architecture": "arm64",
+    "python": "3.12.10",
+    "hardware": "Apple M4"
+  },
+  "checks": [
+    {
+      "command": "uv sync --frozen",
+      "exit_status": 0,
+      "result": "Checked 29 packages; lockfile sync completed."
+    },
+    {
+      "command": "uv run ruff format --check . && uv run ruff check .",
+      "exit_status": 0,
+      "result": "17 files already formatted; all checks passed."
+    },
+    {
+      "command": "uv run pytest -q",
+      "exit_status": 0,
+      "result": "14 tests passed, including strict validation, idempotency collision, cross-owner denial, bounded dependency timeouts, four competing workers, stale fencing, local result deduplication, and a worker subprocess exit followed by lease-expiry recovery."
+    },
+    {
+      "command": "make demo",
+      "exit_status": 0,
+      "result": "A temporary uvicorn server accepted HTTP POST /jobs with status 201, completed the three-record import on attempt 1 with sum 27, and returned queued/running/succeeded event sequences 1/2/3."
+    },
+    {
+      "command": "uv build",
+      "exit_status": 0,
+      "result": "Built source distribution and wheel successfully before the source commit."
+    }
+  ],
+  "limitations": [
+    "FastAPI TestClient emitted upstream deprecation warnings about the current httpx compatibility path; tests still passed.",
+    "No browser rendering claim is included in this receipt; make demo verified HTTP and API state, not visual appearance.",
+    "Dockerfile contents were built into Python artifacts, but a Docker image build was not run in this receipt.",
+    "Verification covers one macOS arm64 host and does not establish multi-host behavior."
+  ]
+}
