@@ -25,7 +25,7 @@
       ],
       "conditions": "Synthetic local identities and Python 3.12 on one macOS host.",
       "limitations": "Bearer tokens use a configured in-memory map; public identity-provider integration is not implemented.",
-      "draft_resume_wording": "Built an owner-scoped FastAPI import API with strict payload validation and transactional idempotency collision detection.",
+      "draft_resume_wording": "Built a FastAPI import API with owner-based access and idempotency keys that deduplicate requests and reject conflicting payloads.",
       "wording_status": "user_review_pending",
       "mastery_status": "pending"
     },
@@ -51,7 +51,7 @@
       ],
       "conditions": "SQLite WAL, four local worker threads, controlled dependency, and a real local subprocess termination test.",
       "limitations": "The tested guarantee is single-host; worker execution remains at least once and remote side effects require their own idempotency contract.",
-      "draft_resume_wording": "Implemented persistent workers with atomic leases, fencing tokens, bounded retries, and tested process-stop recovery with deduplicated local results.",
+      "draft_resume_wording": "Built persistent workers with leases, fencing tokens and bounded retries; verified recovery after process termination without duplicate local results.",
       "wording_status": "user_review_pending",
       "mastery_status": "pending"
     },
