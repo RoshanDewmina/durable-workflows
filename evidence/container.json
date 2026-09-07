@@ -1,0 +1,34 @@
+{
+  "source_revision": "db14b5187cbc99963332e5c4fadb54c7400faa22",
+  "command": "docker build -t career-durable:review .; docker run --rm -p127.0.0.1:8311:8111 career-durable:review; HTTP health/create/poll",
+  "exit_status": 0,
+  "host": "macOS-27.0-arm64-arm-64bit",
+  "container_os": "Linux ARM64; python:3.12-slim",
+  "health": {
+    "status": "ok",
+    "service": "durable-workflows",
+    "version": "0.1.0"
+  },
+  "result": {
+    "id": "d7f90215-35cb-4a2e-a560-961874836215",
+    "kind": "data_import",
+    "state": "succeeded",
+    "attempt": 1,
+    "max_attempts": 3,
+    "record_count": 2,
+    "revision": 3,
+    "created_at": "2026-09-07T04:17:20.259Z",
+    "updated_at": "2026-09-07T04:17:20.305Z",
+    "completed_at": "2026-09-07T04:17:20.305Z",
+    "error": null,
+    "result": {
+      "accepted_count": 2,
+      "value_sum": 42
+    }
+  },
+  "image_id": "sha256:c386d236e5695619ee559ad484f824f3f79a8bc5e1dd3b4d349f85fc6ac7c361",
+  "limitations": [
+    "Disposable local container, not public deployment",
+    "Synthetic input"
+  ]
+}

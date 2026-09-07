@@ -1,0 +1,89 @@
+{
+  "verdict": "approve",
+  "repository": "durable-workflows",
+  "source_revision": "db14b5187cbc99963332e5c4fadb54c7400faa22",
+  "reviewed_at": "2026-09-07T04:28:16.396Z",
+  "scope": "One bounded correction review against8485ff4; inspected all committed changes plus root's final working-tree test-only lease adjustment. No reviewer source edits.",
+  "findings": [],
+  "resolved_findings": [
+    {
+      "file": "durable-workflows/src/durable_workflows/worker.py:113",
+      "status": "resolved",
+      "evidence": "SQLITE_BUSY/SQLITE_LOCKED retry is capped at1s backoff and uses stop.wait. Both claim-phase and commit-phase real5.3s lock probes recovered; storage errors are not reclassified as dependency_error."
+    },
+    {
+      "file": "durable-workflows/src/durable_workflows/app.py:80",
+      "status": "resolved",
+      "evidence": "Health checks existing file, required tables, short writable transaction and configured embedded worker liveness. Original removed-store probe now yields503 and does not recreate the file; readiness regression tests pass."
+    },
+    {
+      "file": "durable-workflows/static/styles.css:87",
+      "status": "resolved",
+      "evidence": ".empty-state[hidden] has display:none and greater selector specificity than .empty-state display:grid. Root owns final rendered UI verification."
+    },
+    {
+      "file": "durable-workflows/Dockerfile:3",
+      "status": "resolved",
+      "evidence": "Container defaults HOST=0.0.0.0 and PORT8111. Added .dockerignore excludes local environment, database and cache files. Root's Linux ARM64 container receipt records HTTP health and completed result42."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Full diff and dependent review",
+      "status": "passed",
+      "evidence": "Read worker, readiness/lifespan, tests, CSS, Dockerfile/.dockerignore, Makefile python3 adjustment and README changes. Rechecked run_once storage exception boundary, lease recovery through claim_next, readiness worker state, and prior rg call-site map."
+    },
+    {
+      "name": "uv run --frozen ruff check .",
+      "status": "passed",
+      "evidence": "All checks passed at db14b51 before root's final test-only adjustment."
+    },
+    {
+      "name": "Initial uv run --frozen pytest -q under concurrent review load",
+      "status": "failed",
+      "evidence": "17passed/1failed: existing competing-worker test assumed attempt1 using0.2s lease. Retained test DB proved47 succeeded at attempt1,1 succeeded at attempt2,48 effects total. The retried job had lease_expired followed by running/succeeded. This is correct documented at-least-once behavior, not lost/duplicate committed data."
+    },
+    {
+      "name": "Isolated concurrency test and subsequent full suite",
+      "status": "passed",
+      "evidence": "uv run --frozen pytest -q tests/test_worker.py::test_competing_workers_claim_each_job_once passed; subsequent serialized uv run --frozen pytest -q passed all18. Two upstream TestClient deprecation warnings remain."
+    },
+    {
+      "name": "Original held-lock failure reproduction",
+      "status": "passed",
+      "evidence": "Real BEGIN IMMEDIATE lock held5.3s while persistent worker ran: thread survived; release led to succeeded attempt1 with one effect. Stop/join cleaned up owned thread."
+    },
+    {
+      "name": "Original missing-store readiness reproduction",
+      "status": "passed",
+      "evidence": "Initialize temp store, rename it, GET /health:503 and original path still absent."
+    },
+    {
+      "name": "Independent commit-phase database contention",
+      "status": "passed",
+      "evidence": "Pure dependency acquired a separate temporary SQLite write lock before returning. Lock held5.3s forced complete_job storage timeout; persistent worker survived and recovered expired lease. Final succeeded attempt2, one committed effect, no dependency_error event."
+    },
+    {
+      "name": "Bounded retry shutdown",
+      "status": "passed",
+      "evidence": "Always-busy test adapter raised SQLite BUSY; stop event woke backoff and joined worker in0.0002s. This verifies stop-aware backoff, not interruption of an in-flight SQLite busy wait."
+    },
+    {
+      "name": "Root-arbitrated no-expiry test hardening",
+      "status": "passed",
+      "evidence": "Inspected working-tree-only change importing dataclasses.replace and setting lease_seconds=2.0 solely inside test_competing_workers_claim_each_job_once. Explicit short-lease expiry/recovery tests remain unchanged. This isolates the claim race from unrelated host timing; root must record final commit and its acceptance command."
+    },
+    {
+      "name": "Root Linux container evidence inspection",
+      "status": "passed",
+      "evidence": "evidence/container.json refers to db14b51 and image sha256:c386d236e5695619ee559ad484f824f3f79a8bc5e1dd3b4d349f85fc6ac7c361. Reports Linux ARM64 Python3.12 container, healthy service and actual two-record job succeeded with sum42. Reviewer did not rerun Docker."
+    }
+  ],
+  "limitations": [
+    "Approved sensitive code corrections at db14b51. Root was adding evidence-only files and a reviewed test-only fixture adjustment during this review; final commit, root test receipt and publication acceptance remain root-owned.",
+    "The first concurrency-test failure is retained above, with database evidence and bounded rerun results; it must not be omitted from acceptance history.",
+    "Stop-aware backoff does not cancel the existing five-second SQLite busy wait. Thread dependency timeouts still bound caller wait, not running dependency lifetime, as documented.",
+    "Public deployment, remote worker liveness, multi-host guarantees, production throughput and user mastery are not established by this review.",
+    "Prior independent SIGKILL, fencing, atomic result/event rollback and owner/idempotency checks remain applicable; no affected database transaction or authorization code changed."
+  ]
+}

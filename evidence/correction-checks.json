@@ -1,0 +1,13 @@
+{
+  "source_revision": "db14b5187cbc99963332e5c4fadb54c7400faa22",
+  "command": "make test",
+  "exit_status": 0,
+  "tests_passed": 18,
+  "environment": "macOS-27.0-arm64-arm-64bit",
+  "corrections": [
+    "SQLite BUSY/LOCKED recovery, readiness503, hiddenemptyUI, Linuxcontainer"
+  ],
+  "independent_rereview": "approve",
+  "spend_usd": 0,
+  "final_test_fixture_note": "Concurrent-claim no-expiry scenario uses2second lease; expiry has separate tests"
+}

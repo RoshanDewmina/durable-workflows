@@ -17,9 +17,11 @@
         "src/durable_workflows/models.py:JobCreate",
         "tests/test_api.py"
       ],
-      "source_revision": "1ec1714d7f5bf6a1227c9092cc5116a26cfe23c8",
+      "source_revision": "db14b5187cbc99963332e5c4fadb54c7400faa22",
       "receipt_refs": [
-        "evidence/verification.json"
+        "evidence/verification.json",
+        "evidence/correction-checks.json",
+        "evidence/independent-review.json"
       ],
       "conditions": "Synthetic local identities and Python 3.12 on one macOS host.",
       "limitations": "Bearer tokens use a configured in-memory map; public identity-provider integration is not implemented.",
@@ -41,9 +43,11 @@
         "src/durable_workflows/worker.py:Worker",
         "tests/test_worker.py"
       ],
-      "source_revision": "1ec1714d7f5bf6a1227c9092cc5116a26cfe23c8",
+      "source_revision": "db14b5187cbc99963332e5c4fadb54c7400faa22",
       "receipt_refs": [
-        "evidence/verification.json"
+        "evidence/verification.json",
+        "evidence/correction-checks.json",
+        "evidence/independent-review.json"
       ],
       "conditions": "SQLite WAL, four local worker threads, controlled dependency, and a real local subprocess termination test.",
       "limitations": "The tested guarantee is single-host; worker execution remains at least once and remote side effects require their own idempotency contract.",

@@ -5,6 +5,7 @@ import subprocess
 import sys
 import threading
 import time
+from dataclasses import replace
 from pathlib import Path
 
 from durable_workflows.config import Settings
@@ -81,6 +82,8 @@ def test_fencing_rejects_stale_worker_and_deduplicates_effect(settings: Settings
 
 
 def test_competing_workers_claim_each_job_once(settings: Settings) -> None:
+    # Isolate concurrent claiming; expiry and recovery are exercised separately.
+    settings = replace(settings, lease_seconds=2.0)
     database = initialized(settings)
     total = 48
     for index in range(total):
