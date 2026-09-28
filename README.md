@@ -1,4 +1,4 @@
-# Relay: durable workflows
+# Background Job Service
 
 Relay is a small service-request product that accepts a synthetic integer data import, persists it before work starts, processes it with concurrent workers, and keeps every state transition inspectable. It is designed to make backend failure behavior demonstrable on a laptop rather than hide it behind a hosted queue.
 

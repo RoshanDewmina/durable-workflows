@@ -47,7 +47,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 thread.join(timeout=1)
 
     application = FastAPI(
-        title="Durable Workflows",
+        title="Background Job Service",
         version=__version__,
         description="Owner-scoped, durable data import requests with restart recovery.",
         lifespan=lifespan,
