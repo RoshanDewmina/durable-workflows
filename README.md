@@ -118,7 +118,6 @@ docker run --rm -p 127.0.0.1:8111:8111 \
 - `tests/`: API, authorization, concurrency, timeout, fencing, and process restart coverage.
 - `scripts/`: real HTTP demonstration and reproducible benchmark.
 - `docs/workflow-contract.md`: local copy of the applicable frozen portfolio contract.
-- `INTERVIEW_GUIDE.md`: design explanation and hands-on exercises.
 
 ## License and data
 
